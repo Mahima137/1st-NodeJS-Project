@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Print Name</title>
+</head>
+<body>
+  <button id="printButton">Print My Name</button>
+  <div id="output"></div>
+
+  <script>
+    document.getElementById('printButton').addEventListener('click', async () => {
+      const response = await fetch('/printName');
+      const text = await response.text();
+      document.getElementById('output').textContent = text;
+    });
+  </script>
+
+  <script>
+    const http = require('http');
+
+    const server = http.createServer((req, res) => {
+      if (req.method === 'GET' && req.url === '/printName') {
+        res.setHeader('Content-Type', 'text/plain');
+        res.end('Your name');
+      } else {
+        res.statusCode = 404;
+        res.end('Not Found');
+      }
+    });
+
+    const PORT = 3000;
+    server.listen(PORT, () => {
+      console.log(`Server is listening on port ${PORT}`);
+    });
+  </script>
+</body>
+</html>
+
